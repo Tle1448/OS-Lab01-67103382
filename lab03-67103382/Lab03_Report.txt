@@ -1,0 +1,51 @@
+======================================================
+COE67-222 Operating Systems - Lab 03 Report
+Name: Naphat Paramas
+Student ID: 67103382
+======================================================
+
+1. The Race Condition (Phase 2):
+In the `race_condition.py` script, what exactly causes the final weight to be less than the expected value? Explain the role of the OS Scheduler in this error.
+:In the race_condition.py script, the final weight can be
+less than the expected value because both threads access
+and modify the same shared variable at the same time.
+The operation Read - Modify - Write is not atomic.
+The OS Scheduler may pause one thread after it reads the
+value and allow another thread to read and modify the same
+old value. When the threads write their results, one update
+can overwrite the other update.
+Therefore, the Actual Weight Value can be less than 200.
+
+2. Mutex vs. Semaphore (Phase 3):
+In `producer_consumer.py`:
+- What is the specific job of the `mutex`?
+- What is the specific job of the `empty` and `full` semaphores? 
+(Why can't we just use a Mutex for everything?)
+:The mutex protects the critical section of the shared buffer.
+It ensures that only one thread can access the buffer's
+critical section at a time.
+
+The empty semaphore counts the number of empty slots in the
+buffer. The Producer must wait when the buffer is full.
+
+The full semaphore counts the number of filled slots in the
+buffer. The Consumer must wait when the buffer is empty.
+
+We cannot use only a Mutex because a Mutex controls mutual
+exclusion, but it does not count how many buffer slots are
+empty or how many items are available.
+
+
+3. Deadlock Awareness:
+In the Producer function, we wrote:
+    empty.acquire()
+    mutex.acquire()
+What would happen if we swapped these two lines? (mutex first, then empty). Imagine the buffer is completely full. Explain the potential OS problem.
+:If empty.acquire() and mutex.acquire() were swapped, the
+Producer could acquire the mutex first and then wait for an
+empty slot when the buffer is completely full.
+While the Producer is holding the mutex, the Consumer may
+need the same mutex to remove an item from the buffer and
+release an empty slot.
+Therefore, both processes/threads could wait for each other,
+causing a deadlock.
