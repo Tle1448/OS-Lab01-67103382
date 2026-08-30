@@ -1,0 +1,33 @@
+======================================================
+COE67-222 Operating Systems - Lab 02 Report
+Name: Naphat Paramas 
+Student ID: 67103382
+======================================================
+
+1. Execution Time Comparison:
+- Sequential Time: [9.17] seconds
+- Multithreading Time: [9.63] seconds
+- Multiprocessing Time: [8.51] seconds
+
+2. System Observation (htop):
+Explain the difference in CPU core utilization (in htop) when running the Multithreading script vs. the Multiprocessing script.
+
+:When running the Multithreading script, CPU utilization
+did not effectively use all CPU cores because Python's GIL
+prevents multiple threads from executing Python bytecode
+at the same time.
+When running the Multiprocessing script, multiple CPU cores
+were utilized at the same time because each process has its
+own memory space and its own GIL.
+
+3. Analysis (The GIL):
+Based on your results, why did Multithreading fail to make the code run faster? Why is Multiprocessing a better choice for CPU-bound tasks (like Machine Learning data augmentation) in Python?
+:Multithreading did not make the program significantly faster
+because Python has a Global Interpreter Lock (GIL), which
+prevents multiple threads from executing Python bytecode
+simultaneously.
+
+Multiprocessing is better for CPU-bound tasks because each
+process has its own memory space and its own GIL. Therefore,
+multiple processes can run on different CPU cores at the same
+time and achieve true parallelism.
